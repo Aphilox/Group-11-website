@@ -1,5 +1,23 @@
+// Media control to prevent simultaneous playback
+function setupMediaControls() {
+  const mediaElements = document.querySelectorAll('video, audio');
+  
+  mediaElements.forEach(media => {
+    media.addEventListener('play', () => {
+      mediaElements.forEach(otherMedia => {
+        if (otherMedia !== media && !otherMedia.paused) {
+          otherMedia.pause();
+        }
+      });
+    });
+  });
+}
+
 // Fade in sections when scrolling
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialize media controls
+  setupMediaControls();
+
   const sections = document.querySelectorAll('section');
   
   const observer = new IntersectionObserver((entries) => {
